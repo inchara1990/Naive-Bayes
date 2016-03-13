@@ -1,0 +1,6 @@
+function [p] = NB_YPrior(yTrain)
+[nrows,ncols] = size(yTrain);
+index_one = find(yTrain == 1 );
+[nrows_index,ncols_index] = size(index_one);
+p = nrows_index/nrows;
+end
