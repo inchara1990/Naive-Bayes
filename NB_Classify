@@ -1,0 +1,58 @@
+function [yHat] = NB_Classify(D, p, XTest)
+% Implement your function here.
+[nrows_test,ncols_test] = size(XTest);
+
+%cal probabilties for class one
+D_classone = repmat(D(1,:),nrows_test,1);
+D_MAPone = XTest.* D_classone;
+%cal probabilties for class two
+D_classtwo = repmat(D(2,:),nrows_test,1);
+D_MAPtwo = XTest.* D_classtwo;
+
+i =1;
+for j = (1:1:nrows_test)
+% row from test
+temp = XTest(j,:);
+% row from MAP
+temp_prob = D(1,:);
+% indices for words not present 
+temp_one = find(temp~=0);
+% indices for words present 
+temp_zero = find(temp==0);
+%separate out MAP estimates for words present and absent
+present = temp_prob(:,temp_one);
+absent = temp_prob(:,temp_zero);
+%sum probabilities for words present and (1-p) for words absent
+D_MAPres_one(i,1)=sum(log(present)) + sum(log(1-absent)) + log(p);
+i = i+1;
+end
+
+r =1;
+for q = (1:1:nrows_test)
+% row from test
+temp1 = XTest(q,:);
+% row from MAP
+temp1_prob = D(2,:);
+% indices for words not present 
+temp1_one = find(temp1~=0);
+% indices for words present 
+temp1_zero = find(temp1==0);
+%separate out MAP estimates for words present and absent
+present1 = temp1_prob(:,temp1_one);
+absent1 = temp1_prob(:,temp1_zero);
+%sum probabilities for words present and (1-p) for words absent
+D_MAPres_two(r,1)=sum(log(present1)) + sum(log(1-absent1)) + log(1-p);
+r = r+1;
+end
+
+
+%check the greater probability
+
+Result = gt(D_MAPres_two,D_MAPres_one);
+
+%assign label 2 if greater by adding one
+Result = Result + 1;
+
+yHat = Result;
+
+end
