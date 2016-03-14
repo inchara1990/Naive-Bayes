@@ -1,5 +1,7 @@
 function [yHat] = NB_Classify(D, p, XTest)
-% Implement your function here.
+%yHat is the predicted output- 1 or 2
+%based on the MAP estimates, obtain the probability of the word present or the word not present for every XTest
+
 [nrows_test,ncols_test] = size(XTest);
 
 %cal probabilties for class one
@@ -47,10 +49,9 @@ end
 
 
 %check the greater probability
-
 Result = gt(D_MAPres_two,D_MAPres_one);
 
-%assign label 2 if greater by adding one
+%assign label 2 if greater by adding one( result will be one in that case)
 Result = Result + 1;
 
 yHat = Result;
